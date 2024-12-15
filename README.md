@@ -10,7 +10,7 @@ cargo run 1 # To get day one solution
 cargo run 2 # To get day two solution
 ```
 The code for day `{x}` is at `src/advent{x}.rs`
-and the input for day `{x}` is at `src/advent{x}.txt`
+and the input for day `{x}` is at `src/input{x}.txt`
 
 ## Contirbution
 Code improvements are welcome (as long as they are not too complicated for a newcommer to understand).
