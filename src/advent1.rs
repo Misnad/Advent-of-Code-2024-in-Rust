@@ -3,26 +3,51 @@ use std::{
     io::{self, BufRead},
 };
 
-pub const INPUT: &str = "src/advent1.txt";
+pub const INPUT: &str = "src/input1.txt";
 
 pub fn solve() {
-    let nums = read_nums(INPUT).unwrap_or_else(|e| {
+    let (mut num1, mut num2) = read_nums(INPUT).unwrap_or_else(|e| {
         eprintln!("Error reading numbers from file {}: {}", INPUT, e);
         (Vec::new(), Vec::new())
     });
 
-    // Sort both list
-    let (mut num1, mut num2) = nums;
     num1.sort();
     num2.sort();
 
+    // Part 1
     let mut nums =  Vec::new();
     for i in 0..num1.len() {
         nums.push((num1[i] - num2[i]).abs());
     }
-    println!("Numbers read from the file: {:?}", nums.into_iter().sum::<i32>());
     
+    println!("Total distance: {:?}", nums.into_iter().sum::<i32>());
+
+    // Part 2
+    let mut sim: i64 = 0;
+    let mut j = 0;
+    let mut i = 0;
+
+    let max = num1.len();
+    loop {
+        if j >= max || i >= max {
+            break;
+        } else if num1[i] < num2[j] {
+            i += 1;
+        } else if num1[i] > num2[j] {
+            j += 1;
+        } else if num1[i] == num2[j] {
+            let mut t = j;
+            while t < max && num1[i] == num2[t]  {
+                sim += num1[i] as i64;
+                t += 1;
+            }
+            i += 1;
+        }
+    }
+
+    println!("Similarity score: {sim}");
 }
+
 fn read_nums(file_path: &str) -> Result<(Vec<i32>, Vec<i32>), io::Error> {
     let file = fs::File::open(file_path)?;
     let reader = io::BufReader::new(file);
